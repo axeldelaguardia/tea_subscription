@@ -1,24 +1,83 @@
-# README
+# Tea Subscription
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Backend API for Tea Subscription
 
-Things you may want to cover:
+This allows the following features to the tea subscription.
+- Subscribe for Tea
+- Cancel subscription for Tea
+- View all subscription
 
-* Ruby version
+### Endpoints
 
-* System dependencies
+---
 
-* Configuration
+#### Subscriptions
+<details>
+  <summary>POST: Create Subscription</summary>
+  
+  <br>
+  Request:
 
-* Database creation
+  ```JS
+  POST /api/v1/subscription
+  ```
 
-* Database initialization
 
-* How to run the test suite
+  Headers:
 
-* Services (job queues, cache servers, search engines, etc.)
+  ```JS
+  Content-Type: application/json
+  ```
 
-* Deployment instructions
 
-* ...
+  Body: 
+
+	```JSON
+	{
+		"customer_id": "14",
+		"subscription_id": "1"
+	}
+
+  <br>
+
+  Response: 
+
+  ```JSON
+  {
+    "data": {
+      "type": "user",
+      "attributes": {
+        "email": "example@example.com",
+        "user_type": "donor",
+        "username": "example_username"
+      }
+    }
+  }
+  ```
+</details>
+
+<details>
+  <summary>GET: All Users</summary>
+  
+  <br>
+  Request:
+
+  ```JS
+  GET /api/v1/users
+  ```
+
+  Response: 
+
+  | Result | Status |
+  | ------- | ------| 
+  | `Success` | 201 |
+  | `Failure`| 401 |
+
+
+
+
+<br>
+
+---
+
+<br>
