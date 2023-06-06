@@ -5,5 +5,5 @@ Rails.application.routes.draw do
   # root "articles#index"
 
 	root "welcome#index"
-
+	resources :subscription, only: [:create, :destroy, :index]
 end
