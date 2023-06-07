@@ -240,6 +240,7 @@ To facilitate this relationship, the `CustomerSubscription` endpoint was impleme
   | ----- | -----| -------------- | 
   | `tea_id` | integer | Foreign Key to Tea
   | `subscription_id` | integer | Foreign Key to Subscription
- </details>
+</details>
   
+![database_schema](https://user-images.githubusercontent.com/115383288/244175304-3e80d989-8d5c-469c-81a0-09c3ed34a59e.png)
 <br>
