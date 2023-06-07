@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :subscription do
     title { Faker::Subscription.plan }
-    price { Faker::Number.between(from: 10..100) }
-    status { Faker::Number.between(from: 1, to: 3) }
+    price { Faker::Number.within(range: 10.0..100.0) }
+    status { Faker::Number.within(range: 0..1) }
     frequency { Faker::Subscription.payment_term }
 
 		trait :active do
