@@ -39,29 +39,43 @@ To facilitate this relationship, the `CustomerSubscription` endpoint was impleme
 
   Body: 
 
-	```JSON
-	{
-		"customer_id": "14",
-		"subscription_id": "1"
-	}
-	```
+  ```JSON
+  {
+    "customer_id": "14",
+    "subscription_id": "1"
+  }
+  ```
 
   <br>
 
-  Response: 
+  Successful Response: 
 
-	```JSON
-		{
-			"data": {
-				"id": "13",
-				"type": "customer_subscription",
-				"attributes": {
-					"customer_id": 2,
-					"subscription_id": 2
-				}
-			}
-		}
-	```
+  ```JSON
+  {
+    "data": {
+      "id": "13",
+      "type": "customer_subscription",
+      "attributes": {
+        "customer_id": 2,
+        "subscription_id": 2
+      }
+    }
+  }
+  ```
+  
+  Failed Response (No Customer ID Provided):
+  
+  ```JSON
+  {
+    "message": "your query could not be completed",
+    "errors": [
+      {
+        "status": "404",
+        "title": "Customer ID must be provided to create a subscription."
+      }
+    ]
+  }
+  ```
 
 </details>
 
@@ -81,40 +95,72 @@ To facilitate this relationship, the `CustomerSubscription` endpoint was impleme
   | ----- | ----------- | -----| -------------- | 
   | `customer_id` | Required | string | Customer ID
 
-  Response:
+  Successful Response:
   
   ```JSON
   {
     "data": [
       {
         "id": "1",
-        "type": "subscriptions",
+        "type": "customer_subscriptions",
         "attributes": {
-          "title": "Premium",
-          "price": 59.5643354788551,
-          "status": "inactive",
-          "frequency": 2
+          "customer_id": 1,
+          "subscription": {
+            "id": 1
+            "title": "Starter",
+            "price": 59.5643354788551,
+            "status": "inactive",
+            "frequency": 2,
+            "created_at": "2023-06-07T16:43:21.067Z",
+            "updated_at": "2023-06-07T16:43:21.067Z"
+          }
         }
       },
       {
         "id": "2",
         "type": "subscriptions",
         "attributes": {
-          "title": "Bronze",
-          "price": 91.0314572295903,
-          "status": "inactive",
-          "frequency": 4
+          "customer_id": 1,
+          "subscription": {
+            "id": 2
+            "title": "Basic",
+            "price": 91.0314572295903,
+            "status": "inactive",
+            "frequency": 4,
+            "created_at": "2023-06-07T16:43:21.067Z",
+            "updated_at": "2023-06-07T16:43:21.067Z"
+          }
         }
       },
-        {
+      {
         "id": "3",
         "type": "subscriptions",
         "attributes": {
-          "title": "Student",
-          "price": 21.758283638327228,
-          "status": "active",
-          "frequency": 2
+          "customer_id": 1,
+          "subscription": {
+            "id": 3
+            "title": "Premium",
+            "price": 91.0314572295903,
+            "status": "inactive",
+            "frequency": 4,
+            "created_at": "2023-06-07T16:43:21.067Z",
+            "updated_at": "2023-06-07T16:43:21.067Z"
+          }
         }
+      }
+    ]
+  }
+  ```
+  
+  Failed Response (No Customer ID Provided):
+  
+  ```JSON
+  {
+    "message": "your query could not be completed",
+    "errors": [
+      {
+        "status": "404",
+        "title": "Customer ID must be provided to find subscriptions."
       }
     ]
   }
@@ -145,48 +191,55 @@ To facilitate this relationship, the `CustomerSubscription` endpoint was impleme
   
 ---
 
-**Tea**
+<details>
+  <summary><b>Tea</b></summary>
 
-| Attribute | Data Type | Description |
-| ----- | -----| -------------- | 
-| `title` | string | Name of Tea
-| `description` | string | Tea Type
-| `temperature` | float | Measured in Farenheit
-| `brew_time` | integer | Measured in Minutes
+  | Attribute | Data Type | Description |
+  | ----- | -----| -------------- | 
+  | `title` | string | Name of Tea
+  | `description` | string | Tea Type
+  | `temperature` | float | Measured in Farenheit
+  | `brew_time` | integer | Measured in Minutes
+</details>
 
+<details>
+  <summary><b>Customer</b></summary>
 
-**Customer**
+  | Attribute | Data Type | Description |
+  | ----- | -----| -------------- | 
+  | `first_name` | string | First name of customer
+  | `last_name` | string | Last name of customer
+  | `email` | string | Valid email address
+  | `address` | string | Full address
+ </details>
 
-| Attribute | Data Type | Description |
-| ----- | -----| -------------- | 
-| `first_name` | string | First name of customer
-| `last_name` | string | Last name of customer
-| `email` | string | Valid email address
-| `address` | string | Full address
+<details>
+  <summary><b>Subscription</b></summary>
 
+  | Attribute | Data Type | Description |
+  | ----- | -----| -------------- | 
+  | `title` | string | Type of Subscription
+  | `price` | float | US Currency
+  | `status` | integer | enum (active or inactive)
+  | `frequency` | integer | Measured in weeks
+</details>
 
-**Subscription**
+<details>
+  <summary><b>Customer Subscriptions</b></summary>
 
-| Attribute | Data Type | Description |
-| ----- | -----| -------------- | 
-| `title` | string | Type of Subscription
-| `price` | float | US Currency
-| `status` | integer | enum (active or inactive)
-| `frequency` | integer | Measured in weeks
+  | Attribute | Data Type | Description |
+  | ----- | -----| -------------- | 
+  | `customer_id` | integer | Foreign Key to Customer
+  | `subscription_id` | integer | Foreign Key to Subscription
+</details>
+  
+<details>
+  <summary><b>Subscription Teas</b></summary>
 
-
-**Customer Subscriptions**
-
-| Attribute | Data Type | Description |
-| ----- | -----| -------------- | 
-| `customer_id` | integer | Foreign Key to Customer
-| `subscription_id` | integer | Foreign Key to Subscription
-
-**Subscription Teas**
-
-| Attribute | Data Type | Description |
-| ----- | -----| -------------- | 
-| `tea_id` | integer | Foreign Key to Tea
-| `subscription_id` | integer | Foreign Key to Subscription
-
+  | Attribute | Data Type | Description |
+  | ----- | -----| -------------- | 
+  | `tea_id` | integer | Foreign Key to Tea
+  | `subscription_id` | integer | Foreign Key to Subscription
+ </details>
+  
 <br>
