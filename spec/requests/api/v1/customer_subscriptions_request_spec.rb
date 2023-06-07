@@ -1,18 +1,26 @@
 require "rails_helper"
 
 RSpec.describe "Subscription Request" do
-	describe "Subscription Index" do
+	describe "Customer Subscriptions" do
 		context "when succesful" do
-			it "returns all subscriptions active or inactive" do
-				create_list(:subscription, 5)
+			it "returns all subscriptions active or inactive for a customer" do
+				subs = create_list(:subscription, 5)
+				customer_1 = create(:customer)
+				customer_2 = create(:customer)
+				CustomerSubscription.create(customer: customer_1, subscription: subs[0])
+				CustomerSubscription.create(customer: customer_1, subscription: subs[1])
+				CustomerSubscription.create(customer: customer_2, subscription: subs[2])
+				CustomerSubscription.create(customer: customer_2, subscription: subs[3])
+				CustomerSubscription.create(customer: customer_1, subscription: subs[4])
 
-				get api_v1_subscriptions_path
+				get api_v1_customer_subscriptions_path, params: {customer_id: customer_1.id}
 
 				data = JSON.parse(response.body, symbolize_names: true)
 
 				expect(data).to be_a Hash
 				expect(data.keys).to eq([:data])
 				expect(data[:data]).to be_an Array
+				expect(data[:data].count).to eq(3)
 				data[:data].each do |subscription|
 					expect(subscription).to be_a Hash
 					expect(subscription.keys).to match([:id, :type, :attributes])
@@ -27,6 +35,64 @@ RSpec.describe "Subscription Request" do
 				end
 			end
 		end
+
+		context "when unsuccesful" do
+			it "returns all subscriptions active or inactive for a customer" do
+				subs = create_list(:subscription, 5)
+				customer_1 = create(:customer)
+				customer_2 = create(:customer)
+				CustomerSubscription.create(customer: customer_1, subscription: subs[0])
+				CustomerSubscription.create(customer: customer_1, subscription: subs[1])
+				CustomerSubscription.create(customer: customer_2, subscription: subs[2])
+				CustomerSubscription.create(customer: customer_2, subscription: subs[3])
+				CustomerSubscription.create(customer: customer_1, subscription: subs[4])
+
+				get api_v1_customer_subscriptions_path, params: {customer_id: 7}
+
+				data = JSON.parse(response.body, symbolize_names: true)
+
+				expect(data).to be_a Hash
+				expect(data.keys).to match([:message, :errors])
+				expect(data[:message]).to be_a String
+				expect(data[:errors]).to be_an Array
+				data[:errors].each do |error|
+					expect(error.keys).to match([:status, :title])
+					expect(error[:status]).to be_a String
+					expect(error[:status]).to eq("404")
+					expect(error[:title]).to be_a String
+					expect(error[:title]).to eq("Couldn't find Customer with 'id'=7")
+				end
+			end
+		end
+
+		context "when unsuccesful" do
+			it "returns all subscriptions active or inactive for a customer" do
+				subs = create_list(:subscription, 5)
+				customer_1 = create(:customer)
+				customer_2 = create(:customer)
+				CustomerSubscription.create(customer: customer_1, subscription: subs[0])
+				CustomerSubscription.create(customer: customer_1, subscription: subs[1])
+				CustomerSubscription.create(customer: customer_2, subscription: subs[2])
+				CustomerSubscription.create(customer: customer_2, subscription: subs[3])
+				CustomerSubscription.create(customer: customer_1, subscription: subs[4])
+
+				get api_v1_customer_subscriptions_path
+
+				data = JSON.parse(response.body, symbolize_names: true)
+
+				expect(data).to be_a Hash
+				expect(data.keys).to match([:message, :errors])
+				expect(data[:message]).to be_a String
+				expect(data[:errors]).to be_an Array
+				data[:errors].each do |error|
+					expect(error.keys).to match([:status, :title])
+					expect(error[:status]).to be_a String
+					expect(error[:status]).to eq("404")
+					expect(error[:title]).to be_a String
+					expect(error[:title]).to eq("Customer ID must be provided to find subscriptions.")
+				end
+			end
+		end
 	end
 
 	describe "create subscription" do
@@ -35,7 +101,7 @@ RSpec.describe "Subscription Request" do
 				sub = create(:subscription)
 				customer =  create(:customer)
 
-				post api_v1_subscriptions_path, params: {id: sub.id, customer_id: customer.id}
+				post api_v1_customer_subscriptions_path, params: {id: sub.id, customer_id: customer.id}
 
 				data = JSON.parse(response.body, symbolize_names: true)
 
@@ -56,7 +122,7 @@ RSpec.describe "Subscription Request" do
 			it "user doesn't exist" do
 				sub = create(:subscription)
 
-				post api_v1_subscriptions_path, params: {id: sub.id, customer_id: 35}
+				post api_v1_customer_subscriptions_path, params: {id: sub.id, customer_id: 35}
 
 				data = JSON.parse(response.body, symbolize_names: true)
 
@@ -74,7 +140,7 @@ RSpec.describe "Subscription Request" do
 			it "subscription doesn't exist" do
 				customer = create(:customer)
 
-				post api_v1_subscriptions_path, params: {id: 2, customer_id: customer.id}
+				post api_v1_customer_subscriptions_path, params: {id: 2, customer_id: customer.id}
 
 				data = JSON.parse(response.body, symbolize_names: true)
 
@@ -92,7 +158,7 @@ RSpec.describe "Subscription Request" do
 			it "no subscription sent" do
 				customer = create(:customer)
 
-				post api_v1_subscriptions_path, params: {customer_id: customer.id}
+				post api_v1_customer_subscriptions_path, params: {customer_id: customer.id}
 
 				data = JSON.parse(response.body, symbolize_names: true)
 
@@ -112,7 +178,7 @@ RSpec.describe "Subscription Request" do
 			it "no customer sent" do
 				sub = create(:subscription)
 
-				post api_v1_subscriptions_path, params: {id: sub.id}
+				post api_v1_customer_subscriptions_path, params: {id: sub.id}
 
 				data = JSON.parse(response.body, symbolize_names: true)
 
@@ -132,7 +198,7 @@ RSpec.describe "Subscription Request" do
 			it "incorrect data type sent as subscription" do
 				customer = create(:customer)
 
-				post api_v1_subscriptions_path, params: {id: "starter"}
+				post api_v1_customer_subscriptions_path, params: {id: "starter"}
 
 				data = JSON.parse(response.body, symbolize_names: true)
 
@@ -152,7 +218,7 @@ RSpec.describe "Subscription Request" do
 			it "incorrect data type sent as customer" do
 				sub = create(:subscription)
 
-				post api_v1_subscriptions_path, params: {id: sub.id, customer_id: "alex"}
+				post api_v1_customer_subscriptions_path, params: {id: sub.id, customer_id: "alex"}
 
 				data = JSON.parse(response.body, symbolize_names: true)
 
@@ -178,7 +244,7 @@ RSpec.describe "Subscription Request" do
 				customer = create(:customer)
 				customer_subscription = CustomerSubscription.create(customer: customer, subscription: sub)
 
-				delete api_v1_subscription_path(sub.id), params: {customer_id: customer.id}
+				delete api_v1_customer_subscription_path(customer_subscription.id)
 
 				expect(response.status).to eq(204)
 			end
@@ -186,7 +252,7 @@ RSpec.describe "Subscription Request" do
 
 		context "when unsuccessful" do
 			it "customer subscription doesn't exist" do
-				delete api_v1_subscription_path(3), params: {customer_id: 1}
+				delete api_v1_customer_subscription_path(3)
 
 				data = JSON.parse(response.body, symbolize_names: true)
 

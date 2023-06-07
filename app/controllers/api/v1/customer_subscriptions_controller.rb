@@ -1,6 +1,11 @@
-class Api::V1::SubscriptionsController < ApplicationController
+class Api::V1::CustomerSubscriptionsController < ApplicationController
 	def index
-		render json: SubscriptionsSerializer.new(Subscription.all)
+		if params[:customer_id]
+			customer = Customer.find(params[:customer_id])
+			render json: SubscriptionsSerializer.new(Subscription.customer_subscriptions(customer.id))
+		else
+			render json: ErrorSerializer.no_customer, status: 404
+		end
 	end
 
 	def create
@@ -14,9 +19,7 @@ class Api::V1::SubscriptionsController < ApplicationController
 	end
 
 	def destroy
-		subscription = Subscription.find(params[:id])
-		customer = Customer.find(params[:customer_id])
-		customer_subscription = CustomerSubscription.find_by(customer: customer, subscription: subscription)
+		customer_subscription = CustomerSubscription.find(params[:id])
 		customer_subscription.destroy
 		render status: 204
 	end
