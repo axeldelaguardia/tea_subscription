@@ -70,7 +70,7 @@ RSpec.describe "Subscription Request" do
 					expect(error[:title]).to be_a String
 				end
 			end
-			
+
 			it "subscription doesn't exist" do
 				customer = create(:customer)
 
@@ -88,6 +88,86 @@ RSpec.describe "Subscription Request" do
 					expect(error[:title]).to be_a String
 				end
 			end
+
+			it "no subscription sent" do
+				customer = create(:customer)
+
+				post api_v1_subscriptions_path, params: {customer_id: customer.id}
+
+				data = JSON.parse(response.body, symbolize_names: true)
+
+				expect(data).to be_a Hash
+				expect(data.keys).to match([:message, :errors])
+				expect(data[:message]).to be_a String
+				expect(data[:errors]).to be_an Array
+				data[:errors].each do |error|
+					expect(error.keys).to match([:status, :title])
+					expect(error[:status]).to be_a String
+					expect(error[:status]).to eq("404")
+					expect(error[:title]).to be_a String
+					expect(error[:title]).to eq("Couldn't find Subscription without an ID")
+				end
+			end
+
+			it "no customer sent" do
+				sub = create(:subscription)
+
+				post api_v1_subscriptions_path, params: {id: sub.id}
+
+				data = JSON.parse(response.body, symbolize_names: true)
+
+				expect(data).to be_a Hash
+				expect(data.keys).to match([:message, :errors])
+				expect(data[:message]).to be_a String
+				expect(data[:errors]).to be_an Array
+				data[:errors].each do |error|
+					expect(error.keys).to match([:status, :title])
+					expect(error[:status]).to be_a String
+					expect(error[:status]).to eq("404")
+					expect(error[:title]).to be_a String
+					expect(error[:title]).to eq("Couldn't find Customer without an ID")
+				end
+			end
+
+			it "incorrect data type sent as subscription" do
+				customer = create(:customer)
+
+				post api_v1_subscriptions_path, params: {id: "starter"}
+
+				data = JSON.parse(response.body, symbolize_names: true)
+
+				expect(data).to be_a Hash
+				expect(data.keys).to match([:message, :errors])
+				expect(data[:message]).to be_a String
+				expect(data[:errors]).to be_an Array
+				data[:errors].each do |error|
+					expect(error.keys).to match([:status, :title])
+					expect(error[:status]).to be_a String
+					expect(error[:status]).to eq("404")
+					expect(error[:title]).to be_a String
+					expect(error[:title]).to eq("Couldn't find Subscription with 'id'=starter")
+				end
+			end
+
+			it "incorrect data type sent as customer" do
+				sub = create(:subscription)
+
+				post api_v1_subscriptions_path, params: {id: sub.id, customer_id: "alex"}
+
+				data = JSON.parse(response.body, symbolize_names: true)
+
+				expect(data).to be_a Hash
+				expect(data.keys).to match([:message, :errors])
+				expect(data[:message]).to be_a String
+				expect(data[:errors]).to be_an Array
+				data[:errors].each do |error|
+					expect(error.keys).to match([:status, :title])
+					expect(error[:status]).to be_a String
+					expect(error[:status]).to eq("404")
+					expect(error[:title]).to be_a String
+					expect(error[:title]).to eq("Couldn't find Customer with 'id'=alex")
+				end
+			end
 		end
 	end
 
@@ -101,6 +181,26 @@ RSpec.describe "Subscription Request" do
 				delete api_v1_subscription_path(sub.id), params: {customer_id: customer.id}
 
 				expect(response.status).to eq(204)
+			end
+		end
+
+		context "when unsuccessful" do
+			it "customer subscription doesn't exist" do
+				delete api_v1_subscription_path(3), params: {customer_id: 1}
+
+				data = JSON.parse(response.body, symbolize_names: true)
+
+				expect(response.status).to eq(404)
+
+				expect(data).to be_a Hash
+				expect(data.keys).to match([:message, :errors])
+				expect(data[:message]).to be_a String
+				expect(data[:errors]).to be_an Array
+				data[:errors].each do |error|
+					expect(error.keys).to match([:status, :title])
+					expect(error[:status]).to be_a String
+					expect(error[:title]).to be_a String
+				end
 			end
 		end
 	end
