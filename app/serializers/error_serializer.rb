@@ -18,6 +18,18 @@ class ErrorSerializer
 		 }
 	end
 
+	def self.no_customer
+		{
+			message: "your query could not be completed",
+			errors: [
+				{
+					status: "404",
+					title: "Customer ID must be provided to find subscriptions."
+				}
+			]
+		}
+	end
+
 	def status
     return 404 if @object.class == ActiveRecord::RecordNotFound
     400
