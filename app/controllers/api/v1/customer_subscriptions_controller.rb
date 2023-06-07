@@ -2,15 +2,15 @@ class Api::V1::CustomerSubscriptionsController < ApplicationController
 	def index
 		if params[:customer_id]
 			customer = Customer.find(params[:customer_id])
-			render json: SubscriptionsSerializer.new(Subscription.customer_subscriptions(customer.id))
+			render json: CustomerSubscriptionSerializer.new(CustomerSubscription.find_by_customer(customer))
 		else
 			render json: ErrorSerializer.no_customer, status: 404
 		end
 	end
 
 	def create
-		subscription = Subscription.find(params[:id])
-		customer = Customer.find(params[:customer_id])
+		subscription = Subscription.find(customer_subscription_params[:subscription_id])
+		customer = Customer.find(customer_subscription_params[:customer_id])
 		customer_subscription = CustomerSubscription.new(customer: customer, subscription: subscription )
 
 		if customer_subscription.save
@@ -22,5 +22,10 @@ class Api::V1::CustomerSubscriptionsController < ApplicationController
 		customer_subscription = CustomerSubscription.find(params[:id])
 		customer_subscription.destroy
 		render status: 204
+	end
+
+	private
+	def customer_subscription_params
+		params.require(:customer_subscription).permit(:subscription_id, :customer_id)
 	end
 end
