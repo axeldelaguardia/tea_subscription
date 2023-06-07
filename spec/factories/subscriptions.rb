@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :subscription do
     title { Faker::Subscription.plan }
-    price { Faker::Number.within(range: 10.0..100.0) }
+    price { Faker::Number.within(range: 10.0..100.0).round(2) }
     status { Faker::Number.within(range: 0..1) }
     frequency { Faker::Subscription.payment_term }
 
