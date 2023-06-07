@@ -8,6 +8,10 @@ This is a Rails API application made with the following features:
 - Cancel a customer's tea subscription.
 - View all customer's subscription (active or inactive)
 
+The database tables were designed to accommodate many-to-many relationships between `Customers` and `Subscriptions`, as well as between `Subscriptions` and `Teas`. This means that a `Customer` can have multiple `Subscriptions`, and vice versa. Similarly, `Subscriptions` can include multiple `Teas`, and vice versa.
+
+To facilitate this relationship, the `CustomerSubscription` endpoint was implemented. This endpoint allows for the association between an existing `Customer` and a chosen `Subscription`. By using this joint table, the system can establish a connection between the customer and their selected subscription. Furthermore, customers have the option to sign up for multiple subscriptions if they so desire.
+
 ### Endpoints
 
 ---
@@ -131,15 +135,58 @@ This is a Rails API application made with the following features:
   Response:
   | Result | Status |
   | ------ | ------ |
-  | Success | 204 |
+  | `success` | 204 |
   
  </details>
  
 <br>
 
-#### Considerations
+#### Data Details
   
 ---
-  
+
+**Tea**
+
+| Attribute | Data Type | Description |
+| ----- | -----| -------------- | 
+| `title` | string | Name of Tea
+| `description` | string | Tea Type
+| `temperature` | float | Measured in Farenheit
+| `brew_time` | integer | Measured in Minutes
+
+
+**Customer**
+
+| Attribute | Data Type | Description |
+| ----- | -----| -------------- | 
+| `first_name` | string | First name of customer
+| `last_name` | string | Last name of customer
+| `email` | string | Valid email address
+| `address` | string | Full address
+
+
+**Subscription**
+
+| Attribute | Data Type | Description |
+| ----- | -----| -------------- | 
+| `title` | string | Type of Subscription
+| `price` | float | US Currency
+| `status` | integer | enum (active or inactive)
+| `frequency` | integer | Measured in weeks
+
+
+**Customer Subscriptions**
+
+| Attribute | Data Type | Description |
+| ----- | -----| -------------- | 
+| `customer_id` | integer | Foreign Key to Customer
+| `subscription_id` | integer | Foreign Key to Subscription
+
+**Subscription Teas**
+
+| Attribute | Data Type | Description |
+| ----- | -----| -------------- | 
+| `tea_id` | integer | Foreign Key to Tea
+| `subscription_id` | integer | Foreign Key to Subscription
 
 <br>
