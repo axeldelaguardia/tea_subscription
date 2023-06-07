@@ -51,6 +51,44 @@ RSpec.describe "Subscription Request" do
 				expect(data[:data][:attributes][:subscription_id]).to be_an Integer
 			end
 		end
+
+		context "when unsuccessful" do
+			it "user doesn't exist" do
+				sub = create(:subscription)
+
+				post api_v1_subscriptions_path, params: {id: sub.id, customer_id: 35}
+
+				data = JSON.parse(response.body, symbolize_names: true)
+
+				expect(data).to be_a Hash
+				expect(data.keys).to match([:message, :errors])
+				expect(data[:message]).to be_a String
+				expect(data[:errors]).to be_an Array
+				data[:errors].each do |error|
+					expect(error.keys).to match([:status, :title])
+					expect(error[:status]).to be_a String
+					expect(error[:title]).to be_a String
+				end
+			end
+			
+			it "subscription doesn't exist" do
+				customer = create(:customer)
+
+				post api_v1_subscriptions_path, params: {id: 2, customer_id: customer.id}
+
+				data = JSON.parse(response.body, symbolize_names: true)
+
+				expect(data).to be_a Hash
+				expect(data.keys).to match([:message, :errors])
+				expect(data[:message]).to be_a String
+				expect(data[:errors]).to be_an Array
+				data[:errors].each do |error|
+					expect(error.keys).to match([:status, :title])
+					expect(error[:status]).to be_a String
+					expect(error[:title]).to be_a String
+				end
+			end
+		end
 	end
 
 	describe "cancel subscription" do
