@@ -52,4 +52,18 @@ RSpec.describe "Subscription Request" do
 			end
 		end
 	end
+
+	describe "cancel subscription" do
+		context "when successful" do
+			it "removes the subscription from the customer" do
+				sub = create(:subscription)
+				customer = create(:customer)
+				customer_subscription = CustomerSubscription.create(customer: customer, subscription: sub)
+
+				delete api_v1_subscription_path(sub.id), params: {customer_id: customer.id}
+
+				expect(response.status).to eq(204)
+			end
+		end
+	end
 end
