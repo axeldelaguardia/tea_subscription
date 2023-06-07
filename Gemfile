@@ -57,3 +57,4 @@ end
 
 gem "figaro"
 gem "faraday"
+gem "jsonapi-serializer"
