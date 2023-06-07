@@ -8,9 +8,13 @@ This is a Rails API application made with the following features:
 - Cancel a customer's tea subscription.
 - View all customer's subscription (active or inactive)
 
+**Database Design**
 The database tables were designed to accommodate many-to-many relationships between `Customers` and `Subscriptions`, as well as between `Subscriptions` and `Teas`. This means that a `Customer` can have multiple `Subscriptions`, and vice versa. Similarly, `Subscriptions` can include multiple `Teas`, and vice versa.
 
 To facilitate this relationship, the `CustomerSubscription` endpoint was implemented. This endpoint allows for the association between an existing `Customer` and a chosen `Subscription`. By using this joint table, the system can establish a connection between the customer and their selected subscription. Furthermore, customers have the option to sign up for multiple subscriptions if they so desire.
+
+**Design Choices**
+I approached the concept with the understanding that subscriptions are predefined options available for customers to choose from. These options can include various tiers such as start, basic, premium, floral, green, and more.
 
 ### Endpoints
 

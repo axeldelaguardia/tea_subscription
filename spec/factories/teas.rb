@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :tea do
     title { Faker::Tea.variety }
     description { Faker::Tea.type}
-    temperature { Faker::Number.between(from: 170.0..185.0) }
-    brew_time { Faker::Number.between(from: 1..10) }
+    temperature { Faker::Number.within(range: 170.0..185.0).round(2) }
+    brew_time { Faker::Number.within(range: 1..10) }
   end
 end
