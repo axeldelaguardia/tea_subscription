@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
 
-	root "welcome#index"
-	resources :subscription, only: [:create, :destroy, :index]
+	namespace :api do
+		namespace :v1 do
+			resources :customer_subscriptions, only: [:index, :create, :destroy]
+		end
+	end
 end
