@@ -33,11 +33,12 @@ This allows the following features to the tea subscription.
   Body: 
 
 	```JSON
-		{
-			"customer_id": "14",
-			"subscription_id": "1"
-		}
+	{
+		"customer_id": "14",
+		"subscription_id": "1"
+	}
 	```
+
   <br>
 
   Response: 
