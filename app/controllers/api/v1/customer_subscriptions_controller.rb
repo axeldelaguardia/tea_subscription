@@ -18,6 +18,12 @@ class Api::V1::CustomerSubscriptionsController < ApplicationController
 		end
 	end
 
+	def update
+		customer_subscription = CustomerSubscription.find(update_params[:id])
+		customer_subscription.update(status: update_params[:status])
+		render json: CustomerSubscriptionSerializer.new(customer_subscription), status: 200
+	end
+
 	def destroy
 		customer_subscription = CustomerSubscription.find(params[:id])
 		customer_subscription.destroy
@@ -26,6 +32,10 @@ class Api::V1::CustomerSubscriptionsController < ApplicationController
 
 	private
 	def customer_subscription_params
-		params.require(:customer_subscription).permit(:subscription_id, :customer_id)
+		params.require(:customer_subscription).permit(:id, :subscription_id, :customer_id, :status)
+	end
+
+	def update_params
+		params.require(:customer_subscription).permit(:id, :status)
 	end
 end

@@ -323,4 +323,47 @@ RSpec.describe "Subscription Request" do
 			end
 		end
 	end
+
+	describe "update the status (cancel) of a customer subscription" do
+		context "when successful" do
+			it "updates the status of a customer subscription to inactive" do
+				create_list(:customer, 2)
+				create_list(:subscription, 3)
+				cs_1 = CustomerSubscription.create(customer: Customer.first, subscription: Subscription.first)
+				cs_2 = CustomerSubscription.create(customer: Customer.first, subscription: Subscription.second)
+				cs_2 = CustomerSubscription.create(customer: Customer.second, subscription: Subscription.third)
+
+				headers = { "Content-Type" => "application/json" }
+				body = {
+					id: cs_1.id,
+					status: 1
+				}
+
+				patch api_v1_customer_subscription_path(cs_1), headers: headers, params: JSON.generate(customer_subscription: body)
+
+				data = JSON.parse(response.body, symbolize_names: true)
+
+				expect(data).to be_a Hash
+				expect(data).to have_key(:data)
+				expect(data[:data]).to be_a Hash
+				expect(data[:data].keys).to match([:id, :type, :attributes])
+				expect(data[:data][:id]).to be_a String
+				expect(data[:data][:type]).to be_a String
+				expect(data[:data][:attributes]).to be_a Hash
+				expect(data[:data][:attributes].keys).to match([:customer_id, :subscription])
+				expect(data[:data][:attributes][:customer_id]).to be_an Integer
+				
+				subscription = data[:data][:attributes][:subscription]
+				expect(subscription).to be_a Hash
+				expect(subscription.keys).to match([:id, :title, :price, :status, :frequency, :created_at, :updated_at])
+				expect(subscription[:id]).to be_an Integer
+				expect(subscription[:title]).to be_a String
+				expect(subscription[:price]).to be_a Float
+				expect(subscription[:status]).to be_a String
+				expect(subscription[:frequency]).to be_a Integer
+				expect(subscription[:created_at]).to be_a String
+				expect(subscription[:updated_at]).to be_a String
+			end
+		end
+	end
 end
