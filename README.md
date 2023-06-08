@@ -15,9 +15,11 @@ This is a Rails API application made with the following features:
 - View all customer's subscription (active or inactive)
 
 **Database Design**
+
 The database tables were designed to accommodate many-to-many relationships between `Customers` and `Subscriptions`, as well as between `Subscriptions` and `Teas`. This means that a `Customer` can have multiple `Subscriptions`, and vice versa. Similarly, `Subscriptions` can include multiple `Teas`, and vice versa.
 
 **Design Choices**
+
 I approached the concept with the understanding that subscriptions are predefined options available for customers to choose from. These options can include various tiers such as start, basic, premium, floral, green, and more. These subscriptions have their own status as there could be "seasonal" subscriptions that are only available during seasons or holidays. I created a status in the CustomerSubscription joint table to associate whether a subscription is active or cancelled to a specific customer. This required to serializer the CustomerSubscription to view the status when retrieving all subscriptions for a certain customer.
 
 ### Endpoints
