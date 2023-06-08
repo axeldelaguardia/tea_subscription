@@ -30,7 +30,7 @@ I approached the concept with the understanding that subscriptions are predefine
   Request:
 
   ```JS
-  POST /api/v1/customer_subscriptions
+  POST /api/v1/customer/:customer_id/subscriptions
   ```
 
 
@@ -45,8 +45,7 @@ I approached the concept with the understanding that subscriptions are predefine
 
   ```JSON
   {
-    "customer_id": "14",
-    "subscription_id": "1"
+    "id": "1"
   }
   ```
 
@@ -57,11 +56,13 @@ I approached the concept with the understanding that subscriptions are predefine
   ```JSON
   {
     "data": {
-      "id": "13",
-      "type": "customer_subscription",
+      "id": "1",
+      "type": "subscriptions",
       "attributes": {
-        "customer_id": 2,
-        "subscription_id": 2
+        "title": "Platinum,
+        "price": 98.33,
+        "status": "inactive",
+        "frequency": 0
       }
     }
   }
@@ -235,6 +236,7 @@ I approached the concept with the understanding that subscriptions are predefine
   | ----- | -----| -------------- | 
   | `customer_id` | integer | Foreign Key to Customer
   | `subscription_id` | integer | Foreign Key to Subscription
+  | `status` | integer | Status of Customer's Subscription
 </details>
   
 <details>
