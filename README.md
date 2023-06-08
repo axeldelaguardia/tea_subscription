@@ -30,7 +30,7 @@ I approached the concept with the understanding that subscriptions are predefine
   Request:
 
   ```JS
-  POST /api/v1/customer/:customer_id/subscriptions
+  POST /api/v1/customers/:customer_id/subscriptions
   ```
 
 
@@ -91,14 +91,8 @@ I approached the concept with the understanding that subscriptions are predefine
   Request:
 
   ```JS
-  GET /api/v1/customer_subscriptions
+  GET /api/v1/customers/:customer_id/subscriptions
   ```
-
-  Params: 
-
-  | Name | Requirement | Type | Description |
-  | ----- | ----------- | -----| -------------- | 
-  | `customer_id` | Required | string | Customer ID
 
   Successful Response:
   
@@ -180,13 +174,21 @@ I approached the concept with the understanding that subscriptions are predefine
   Request:
   
   ```JS
-  POST /api/v1/customer_subscriptions/:id
+  PATCH /api/v1/customers/:customer_id/subscriptions/:id
+  ```
+  
+  Body: 
+
+  ```JSON
+  {
+    "status": "inactive"
+  }
   ```
   
   Response:
   | Result | Status |
   | ------ | ------ |
-  | `success` | 204 |
+  | `success` | 200 |
   
  </details>
  
