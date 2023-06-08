@@ -4,7 +4,6 @@
 
 ### Table of Contents
 * [App Details](https://github.com/axeldelaguardia/tea_subscription#api-for-a-tea-subscription-service)
-* [Database Design](https://github.com/axeldelaguardia/tea_subscription#database-design)
 * [Endpoints](https://github.com/axeldelaguardia/tea_subscription#endpoints)
 * [Data Details](https://github.com/axeldelaguardia/tea_subscription#data-details)
 
