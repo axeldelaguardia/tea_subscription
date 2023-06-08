@@ -110,6 +110,7 @@ I approached the concept with the understanding that subscriptions are predefine
         "type": "customer_subscriptions",
         "attributes": {
           "customer_id": 1,
+          "status": "active",
           "subscription": {
             "id": 1
             "title": "Starter",
@@ -126,6 +127,7 @@ I approached the concept with the understanding that subscriptions are predefine
         "type": "subscriptions",
         "attributes": {
           "customer_id": 1,
+          "status": "inactive",
           "subscription": {
             "id": 2
             "title": "Basic",
@@ -142,6 +144,7 @@ I approached the concept with the understanding that subscriptions are predefine
         "type": "subscriptions",
         "attributes": {
           "customer_id": 1,
+          "status": "active",
           "subscription": {
             "id": 3
             "title": "Premium",
