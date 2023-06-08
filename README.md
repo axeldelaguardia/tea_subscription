@@ -3,7 +3,10 @@
 ![tea_image](https://cdn.shopify.com/s/files/1/0533/6743/9558/t/5/assets/pf-3c14c005--Tales-of-the-Tea-Pot-3.jpg?v=1621936037)
 
 ### Table of Contents
-[App_Details](https://github.com/axeldelaguardia/tea_subscription#API%20for%20a%20Tea%20Subscription%20Service)
+* [App Details](https://github.com/axeldelaguardia/tea_subscription#api-for-a-tea-subscription-service)
+* [Database Design](https://github.com/axeldelaguardia/tea_subscription#database-design)
+* [Endpoints](https://github.com/axeldelaguardia/tea_subscription#endpoints)
+* [Data Details](https://github.com/axeldelaguardia/tea_subscription#data-details)
 
 ## API for a Tea Subscription Service
 
