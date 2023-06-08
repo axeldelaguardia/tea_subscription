@@ -259,5 +259,5 @@ I approached the concept with the understanding that subscriptions are predefine
   | `subscription_id` | integer | Foreign Key to Subscription
 </details>
   
-![database_schema](https://user-images.githubusercontent.com/115383288/244175304-3e80d989-8d5c-469c-81a0-09c3ed34a59e.png)
+![database_schema](https://user-images.githubusercontent.com/115383288/244459161-9738fe7c-6e65-4523-9688-3bb81d5f86c7.png)
 <br>
