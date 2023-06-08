@@ -59,7 +59,7 @@ I approached the concept with the understanding that subscriptions are predefine
       "id": "1",
       "type": "subscriptions",
       "attributes": {
-        "title": "Platinum,
+        "title": "Platinum",
         "price": 98.33,
         "status": "inactive",
         "frequency": 0
